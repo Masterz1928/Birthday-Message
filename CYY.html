@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        
+        body {
+            /* Use the 'Inter' font for normal text */
+            font-family: 'Inter', sans-serif;
+            
+            /* Create a nice sky-like gradient background */
+            background: linear-gradient(to top, #65b3bd 0%, #265d9f 100%);
+            
+            /* This is a trick to center everything vertically and horizontally */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            /* Ensure the page takes up at least the full screen height */
+            min-height: 100vh;
+            
+            /* Hide any accidental scrollbars */
+            overflow: hidden;
+            
+            /* Remove default margin */
+            margin: 0;
+        }
+
+        /* --- 2. The Card Styling --- */
+        
+        /* This styles the white "card" */
+        .card {
+            background: white;
+            border-radius: 20px; /* Nice rounded corners */
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            text-align: center;
+            max-width: 90%; /* Make sure it doesn't get too wide on large screens */
+            width: 400px; /* Set a standard width */
+            
+            /* A subtle "pop in" animation when the page loads */
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0; /* Start invisible for the animation */
+            transform: scale(0.8);
+        }
+
+        #gift-container {
+            text-align: center; /* Center the text below the gift */
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        #gift-container:hover {
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+        /* Style for the "Open Me!" text */
+        .open-me-text {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: #555;
+            margin-top: 1rem;
+        }
+
+        /* This styles the SVG present icon */
+        .present-svg {
+            width: 150px; /* Made the gift icon bigger */
+            height: 150px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* This styles the "Happy Birthday!" heading */
+        .card h1 {
+            /* Use the special 'Pacifico' font we imported */
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem; /* Make it big */
+            color: #ff69b4; /* A festive pink color */
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        /* This styles the personal message */
+        .card p {
+            font-size: 1.1rem;
+            color: #555; /* Dark grey, easy to read */
+            line-height: 1.6;
+            margin-bottom: 0; /* No margin at the bottom */
+        }
+        
+        /* This class will be toggled by JavaScript */
+        .hidden {
+            display: none;
+        }
+        
+        /* --- 4. Animation Definitions --- */
+
+        /* This is the keyframe animation for the card pop-in */
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* This is the class we will add with JavaScript to create a confetti piece */
+        .confetti {
+            position: fixed; /* Position relative to the viewport */
+            top: -10px; /* Start just off-screen */
+            width: 25px;
+            height: 10px;
+            border-radius: 70%; /* Make it a circle */
+            
+            /* This animation will make it fall and fade out */
+            /* The duration is now set by JavaScript to make it random */
+            animation: fall linear forwards;
+        }
+        
+        /* This is the keyframe animation for the falling confetti */
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg); /* Fall to the bottom of the screen and spin */
+                opacity: 0; /* Fade out */
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- HTML for the gift box (visible first) -->
+    <div id="gift-container">
+        <!-- SVG Present Icon -->
+        <svg class="present-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <!-- Box -->
+            <rect x="15" y="35" width="70" height="50" rx="5" ry="5" fill="#fde047"/>
+            <!-- Lid -->
+            <rect x="10" y="25" width="80" height="10" rx="3" ry="3" fill="#fde047"/>
+            <!-- Ribbon (Vertical) -->
+            <rect x="45" y="25" width="10" height="60" fill="#ff69b4"/>
+            <!-- Ribbon (Horizontal) -->
+            <rect x="15" y="45" width="70" height="10" fill="#ff69b4"/>
+            <!-- Bow -->
+            <path d="M 50 25 C 40 25, 40 10, 30 10 C 20 10, 20 25, 30 25 L 50 25 Z" fill="#ff69b4"/>
+            <path d="M 50 25 C 60 25, 60 10, 70 10 C 80 10, 80 25, 70 25 L 50 25 Z" fill="#ff69b4"/>
+        </svg>
+        <p class="open-me-text">Click to Open Me :D</p>
+    </div>
+
+    <!-- This is the HTML for the card (hidden first) -->
+    <div id="card-container" class="hidden">
+        <div class="card">
+            <!-- The present icon is removed from inside the card -->
+            <h1>Happy Birthday CYY!</h1>
+
+            <img src="./pic.png" width="350" height="155">
+            
+            <p>
+                Happy birthday to u my boi. be happy and stay happy. Wishing u a long healthy and wealthy life 
+            </p>
+            <p>    
+                Sry i cant give u cake in real life, so here is a virtual one
+            </p>
+            <h1>🎂</h1>
+        </div>
+    </div>
+
+    <!-- This script tag holds the JavaScript for the confetti -->
+    <script>
+        // Get the elements for the two "states"
+        const giftContainer = document.getElementById('gift-container');
+        const cardContainer = document.getElementById('card-container');
+
+        // Add the click listener to the gift
+        giftContainer.addEventListener('click', () => {
+            // Hide the gift
+            giftContainer.classList.add('hidden');
+            
+            // Show the card
+            cardContainer.classList.remove('hidden');
+            
+            // The card's pop-in animation will play automatically!
+        });
+
+        // --- Continuous Confetti Code (un-changed) ---
+
+        // This function creates *one* confetti piece
+        function createConfettiPiece() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti'); // Add the .confetti CSS style
+            
+            // Set a random horizontal position (from 0% to 100% of the screen width)
+            confetti.style.left = Math.random() * 100 + 'vw';
+            
+            // Set a random background color
+            const colors = ['#ff69b4', '#f9a8d4', '#a1c4fd', '#fde047'];
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Set a random fall duration (between 3s and 5s)
+            const duration = Math.random() * 2 + 8;
+            confetti.style.animationDuration = duration + 's';
+            
+            // Add the new confetti piece to the page
+            document.body.appendChild(confetti);
+        
+            // Remove the confetti from the page after its animation is done
+            // (We convert the duration from seconds to milliseconds)
+            setTimeout(() => {
+                confetti.remove();
+            }, duration * 1000);
+        }
+
+        // Start the continuous confetti stream when the page loads
+        // This will create a new piece every 200 milliseconds
+        setInterval(createConfettiPiece, 150);
+    </script>
+
+</body>
+</html>
+
+
